@@ -143,6 +143,7 @@ function Bubble({ message, onRespond }: { message: ThreadMessage; onRespond: (id
           <span className={cn('rounded-full px-2 py-0.5 text-[11px] font-bold', statusLabel[meta.status].className)}>{statusLabel[meta.status].text}</span>
         </div>
         <span className="text-xs text-muted-foreground">{message.body}</span>
+        {meta.counterpart?.length ? <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">La marca aporta</span> : null}
         <ul className="flex flex-wrap gap-1.5">
           {meta.items.map((i) => (
             <li key={i} className="rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold">
@@ -150,6 +151,19 @@ function Bubble({ message, onRespond }: { message: ThreadMessage; onRespond: (id
             </li>
           ))}
         </ul>
+        {meta.counterpart?.length ? (
+          <>
+            <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">El evento da a cambio</span>
+            <ul className="flex flex-wrap gap-1.5">
+              {meta.counterpart.map((i) => (
+                <li key={i} className="rounded-full bg-olympic-green/20 px-2.5 py-1 text-xs font-semibold">
+                  {i}
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+        {meta.rationale ? <p className="text-xs leading-relaxed text-muted-foreground">{meta.rationale}</p> : null}
         <dl className="grid grid-cols-2 gap-2 text-xs">
           {meta.amount ? (
             <div>

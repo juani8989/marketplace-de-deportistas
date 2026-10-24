@@ -10,9 +10,17 @@ import { athletes } from '@/lib/data'
 const seedAffinity = (id: string) => 74 + ([...id].reduce((a, c) => a + c.charCodeAt(0), 0) % 22)
 import type { AthleteProfile, OrgProfile } from '@/lib/profile-types'
 
-export type OfferType = 'Producto' | 'Dinero' | 'Embajador'
+export type OfferType = 'Producto' | 'Dinero' | 'Embajador' | 'Sponsoreo'
 export type OfferStatus = 'pendiente' | 'aceptada' | 'rechazada'
-export type OfferMeta = { type: OfferType; items: string[]; amount: string; duration: string; status: OfferStatus }
+export type OfferMeta = {
+  type: OfferType
+  items: string[]
+  amount: string
+  duration: string
+  status: OfferStatus
+  counterpart?: string[]
+  rationale?: string
+}
 
 export type DeckCard = {
   key: string

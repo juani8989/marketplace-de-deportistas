@@ -8,7 +8,8 @@ import { matches, messages, profiles, user } from '@/lib/db/schema'
 import { partyFromProfile, requireViewer, userKey, type Party } from '@/lib/viewer'
 import { companies, companyFromKey, seedAthleteFromKey, seedAthleteKey } from '@/lib/catalog'
 import { athletes } from '@/lib/data'
-import type { AthleteProfile, OrgProfile } from '@/lib/profile-types'
+import type { AthleteProfile, MerchItem, OrgProfile } from '@/lib/profile-types'
+import type { OfferMeta } from '@/app/actions/match'
 
 export type SearchRole = 'deportista' | 'empresa' | 'evento'
 
@@ -84,6 +85,148 @@ async function loadCandidates(viewerId: string, viewerKey: string, roles: Search
   return filtered.map((c) => ({ ...c, invited: byKey.has(c.party.key), matchId: byKey.get(c.party.key) ?? null }))
 }
 
+async function ensureMatch(targetKey: string, ownerKey: string) {
+  const [created] = await db.insert(matches).values({ athleteKey: targetKey, orgKey: ownerKey }).onConflictDoNothing().returning({ id: matches.id })
+  if (created) return { matchId: created.id, created: true }
+  const [row] = await db.select({ id: matches.id }).from(matches).where(and(eq(matches.athleteKey, targetKey), eq(matches.orgKey, ownerKey))).limit(1)
+  return { matchId: row?.id ?? null, created: false }
+}
+
+export type BrandCard = Candidate & {
+  about: string
+  lookingFor: string[]
+  offers: string[]
+  merch: MerchItem[]
+  website: string
+}
+
+export async function listBrands(query: string): Promise<BrandCard[]> {
+  const viewer = await requireViewer()
+  if (viewer.role !== 'evento') return []
+  const q = normalize(String(query ?? '').slice(0, 80).trim())
+  const base = await loadCandidates(viewer.id, viewer.key, ['empresa'])
+  const userIds = base.filter((c) => c.party.key.startsWith('user:')).map((c) => c.party.key.slice(5))
+  const rows = userIds.length ? await db.select({ userId: profiles.userId, data: profiles.data }).from(profiles).where(inArray(profiles.userId, userIds)) : []
+  const orgByKey = new Map(rows.map((r) => [userKey(r.userId), r.data as OrgProfile]))
+
+  const cards = base.map((c): BrandCard => {
+    const seed = companyFromKey(c.party.key)
+    if (seed) {
+      return { ...c, about: seed.about, lookingFor: seed.lookingFor, offers: [...seed.offers, ...seed.benefits], merch: [], website: '' }
+    }
+    const org = orgByKey.get(c.party.key)
+    return {
+      ...c,
+      about: org?.description ?? '',
+      lookingFor: org?.lookingFor ? [org.lookingFor] : [],
+      offers: org?.merch?.length ? ['Producto', 'Indumentaria'] : [],
+      merch: org?.merch ?? [],
+      website: org?.website ?? '',
+    }
+  })
+  const list = q ? cards.filter((c) => normalize(`${c.party.name} ${c.party.subtitle} ${c.about} ${c.lookingFor.join(' ')}`).includes(q)) : cards
+  return list.slice(0, 30)
+}
+
+export type ContractDraft = { brandGives: string[]; eventGives: string[]; amount: string; duration: string; rationale: string }
+
+const contractSchema = z.object({
+  brandGives: z.array(z.string().max(60)).min(2).max(5).describe('Lo que aporta la marca, frases cortas'),
+  eventGives: z.array(z.string().max(60)).min(2).max(5).describe('Lo que recibe la marca del evento, frases cortas'),
+  amount: z.string().max(40).describe('Monto en pesos argentinos o "Canje"'),
+  duration: z.string().max(40),
+  rationale: z.string().max(240).describe('Una o dos oraciones: por qué ganan ambos'),
+})
+
+function templateContract(event: OrgProfile, brand: BrandCard): ContractDraft {
+  const text = normalize(`${brand.party.subtitle} ${brand.about} ${brand.offers.join(' ')}`)
+  const brandGives: string[] = []
+  if (/indument|ropa|malla|kit/.test(text)) brandGives.push('Remera oficial para los corredores')
+  if (/bebida|isoton|hidrat|nutri/.test(text)) brandGives.push('Hidratación en todos los puestos')
+  if (/equip|antiparr|producto|skate|combate/.test(text) || brand.merch.length) brandGives.push('Productos para premiar al podio')
+  brandGives.push('Aporte económico para la organización')
+  if (brandGives.length < 3) brandGives.push('Activación en la expo del corredor')
+
+  const reach = event.eventInfo?.reach ? ` (${event.eventInfo.reach.replace(/\.$/, '')})` : ''
+  return {
+    brandGives: brandGives.slice(0, 4),
+    eventGives: [
+      'Logo en remera, dorsal y podio',
+      'Stand en la expo del corredor',
+      'Menciones en redes y transmisión',
+      'Cupos de inscripción para su equipo',
+    ],
+    amount: '$ 2.500.000 + canje',
+    duration: event.eventDate ? `Edición ${event.eventDate.slice(0, 4)}` : 'Una edición',
+    rationale: `${brand.party.name} llega a su público en ${event.orgName}${reach}, y el evento suma recursos y mejor experiencia para los corredores.`,
+  }
+}
+
+async function findBrand(brandKey: string) {
+  const all = await listBrands('')
+  return all.find((b) => b.party.key === brandKey) ?? null
+}
+
+export async function draftContract(brandKey: string): Promise<Result<{ draft: ContractDraft; usedAi: boolean }>> {
+  const viewer = await requireViewer()
+  if (viewer.role !== 'evento' || viewer.profile.kind === 'deportista') return { ok: false, error: 'Solo eventos.' }
+  const brand = await findBrand(String(brandKey))
+  if (!brand) return { ok: false, error: 'Marca no encontrada.' }
+  const event = viewer.profile
+
+  try {
+    const { output } = await generateText({
+      model: 'anthropic/claude-sonnet-5.5',
+      output: Output.object({ schema: contractSchema }),
+      system:
+        'Sos asesor comercial de eventos deportivos en Argentina. Proponés contratos de sponsoreo equilibrados donde ganan la marca y el evento. Sé concreto, realista y coherente con el rubro de la marca. Escribí en español rioplatense.',
+      prompt: `Evento: ${event.orgName} (${event.category}), ${event.city}. Fecha: ${event.eventDate ?? 'a definir'}. ${event.description ?? ''} Alcance: ${event.eventInfo?.reach ?? 'sin datos'}.\n\nMarca: ${brand.party.name} (${brand.party.subtitle}). ${brand.about} Busca: ${brand.lookingFor.join(', ')}. Ofrece: ${brand.offers.join(', ')}. Productos: ${brand.merch.map((m) => m.name).join(', ') || 'sin datos'}.`,
+    })
+    return { ok: true, draft: output, usedAi: true }
+  } catch (error) {
+    console.error('draftContract failed, using template', error)
+    return { ok: true, draft: templateContract(event, brand), usedAi: false }
+  }
+}
+
+const cleanList = (list: unknown) =>
+  (Array.isArray(list) ? list : []).map((i) => String(i).trim().slice(0, 60)).filter(Boolean).slice(0, 6)
+
+export async function proposeContract(brandKey: string, draft: ContractDraft): Promise<Result<{ matchId: number }>> {
+  const viewer = await requireViewer()
+  if (viewer.role !== 'evento') return { ok: false, error: 'Solo eventos.' }
+  const brand = await findBrand(String(brandKey))
+  if (!brand) return { ok: false, error: 'Marca no encontrada.' }
+
+  const items = cleanList(draft?.brandGives)
+  const counterpart = cleanList(draft?.eventGives)
+  if (!items.length || !counterpart.length) return { ok: false, error: 'Completá qué aporta cada parte.' }
+
+  const { matchId, created } = await ensureMatch(brand.party.key, viewer.key)
+  if (!matchId) return { ok: false, error: 'No se pudo enviar la propuesta.' }
+  if (created) await db.insert(messages).values({ matchId, senderKey: 'system', kind: 'system', body: `${viewer.name} quiere sumarte como sponsor.` })
+
+  const meta: OfferMeta = {
+    type: 'Sponsoreo',
+    items,
+    counterpart,
+    amount: String(draft.amount ?? '').trim().slice(0, 40),
+    duration: String(draft.duration ?? '').trim().slice(0, 40) || 'A definir',
+    rationale: String(draft.rationale ?? '').trim().slice(0, 240),
+    status: 'pendiente',
+  }
+  const [inserted] = await db
+    .insert(messages)
+    .values({ matchId, senderKey: viewer.key, kind: 'offer', body: `Propuesta de sponsoreo de ${viewer.name}`, meta })
+    .returning({ id: messages.id })
+
+  if (brand.party.key.startsWith('seed:')) {
+    await db.update(messages).set({ meta: { ...meta, status: 'aceptada' } }).where(eq(messages.id, inserted.id))
+    await db.insert(messages).values({ matchId, senderKey: brand.party.key, kind: 'text', body: '¡Nos encanta! Aceptamos la propuesta. Coordinemos la entrega del material y la ubicación del stand.' })
+  }
+  return { ok: true, matchId }
+}
+
 export async function searchPeople(query: string, role: SearchRole): Promise<Candidate[]> {
   const viewer = await requireViewer()
   if (viewer.role === 'deportista') return []
@@ -107,12 +250,7 @@ export async function invite(targetKey: string, note: string): Promise<Result<{ 
   const what = viewer.role === 'evento' ? `participar en ${viewer.name}` : `sumarte al equipo de ${viewer.name}`
   const body = text || `¡Hola! Te invitamos a ${what}. ¿Te interesa?`
 
-  const [created] = await db.insert(matches).values({ athleteKey: targetKey, orgKey: viewer.key }).onConflictDoNothing().returning({ id: matches.id })
-  let matchId = created?.id
-  if (!matchId) {
-    const [row] = await db.select({ id: matches.id }).from(matches).where(and(eq(matches.athleteKey, targetKey), eq(matches.orgKey, viewer.key))).limit(1)
-    matchId = row?.id
-  }
+  const { matchId, created } = await ensureMatch(targetKey, viewer.key)
   if (!matchId) return { ok: false, error: 'No se pudo enviar la invitación.' }
 
   if (created) await db.insert(messages).values({ matchId, senderKey: 'system', kind: 'system', body: `${viewer.name} te envió una invitación.` })
