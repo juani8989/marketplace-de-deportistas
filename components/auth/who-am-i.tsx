@@ -6,6 +6,7 @@ import { enterAsGuest, type Role } from '@/lib/auth-store'
 import { brandLogos, eventImages, roleConfig } from '@/lib/roles'
 import type { FamousAthlete } from '@/lib/wikipedia'
 import { AuthPanel } from '@/components/auth/auth-panel'
+import { BrandLogo } from '@/components/brand-logo'
 import { cn } from '@/lib/utils'
 
 function OlympicRings({ className }: { className?: string }) {
