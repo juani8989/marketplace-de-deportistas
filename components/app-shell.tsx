@@ -16,6 +16,7 @@ import { ChatThread } from '@/components/messages/chat-thread'
 import { AthleteProfileView } from '@/components/profile/athlete-profile'
 import { OrgProfileView } from '@/components/profile/org-profile'
 import { cn } from '@/lib/utils'
+import { BrandLogo } from '@/components/brand-logo'
 
 const tabs: { id: MainTab; label: string; icon: typeof House }[] = [
   { id: 'inicio', label: 'Inicio', icon: House },
@@ -81,8 +82,8 @@ export function AppShell({ viewer }: { viewer: Viewer }) {
       <main className="flex min-h-dvh items-center justify-center md:py-6">
         <div className="relative h-dvh w-full overflow-hidden bg-background md:h-[min(860px,calc(100dvh-3rem))] md:max-w-[420px] md:rounded-[2.5rem] md:border md:border-border md:shadow-2xl">
           <header className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-center justify-between gap-2 bg-gradient-to-b from-background/90 to-transparent px-4 pb-6 pt-4">
-            <p className="font-display text-2xl font-extrabold uppercase tracking-tight">
-              Dorsal<span className="text-accent">.</span>
+            <p>
+              <BrandLogo className="text-2xl" />
             </p>
             <div className="pointer-events-auto flex items-center gap-2">
               <span className={cn('rounded-full px-2.5 py-1 text-xs font-bold', roleBadge[viewer.role])}>{roleLabel}</span>

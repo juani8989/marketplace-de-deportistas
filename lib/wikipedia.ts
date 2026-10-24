@@ -1,4 +1,4 @@
-export const WIKI_HEADERS = { 'User-Agent': 'DorsalHackathon/1.0 (sponsor marketplace demo)' }
+export const WIKI_HEADERS = { 'User-Agent': 'BoostSportHackathon/1.0 (sponsor marketplace demo)' }
 
 export type FamousAthlete = { name: string; sport: string; image: string }
 

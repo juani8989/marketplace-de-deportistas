@@ -10,9 +10,9 @@ const _barlowCondensed = Barlow_Condensed({
 })
 
 export const metadata: Metadata = {
-  title: 'Dorsal · Deportistas y sponsors en un feed',
+  title: 'BoostSport · Deportistas y sponsors en un feed',
   description:
-    'Dorsal conecta a deportistas que buscan sponsors con empresas que buscan caras para su marca, en un feed vertical de videos y fotos.',
+          'BoostSport conecta a deportistas que buscan sponsors con empresas que buscan caras para su marca, en un feed vertical de videos y fotos.',
   generator: 'v0.app',
   icons: {
     icon: [

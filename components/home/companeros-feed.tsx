@@ -45,8 +45,8 @@ export function CompanerosFeed() {
   }
 
   async function share(post: FeedPost) {
-    const text = `${post.author.name} en Dorsal: ${post.body}`
-    if (navigator.share) await navigator.share({ title: 'Dorsal', text }).catch(() => {})
+    const text = `${post.author.name} en BoostSport: ${post.body}`
+    if (navigator.share) await navigator.share({ title: 'BoostSport', text }).catch(() => {})
     else await navigator.clipboard?.writeText(text).catch(() => {})
   }
 

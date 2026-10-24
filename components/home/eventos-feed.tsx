@@ -63,7 +63,7 @@ export function EventosFeed() {
                   })}
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground">{s?.going ?? event.attendees.length}</span> deportistas de Dorsal van a ir
+                  <span className="font-semibold text-foreground">{s?.going ?? event.attendees.length}</span> deportistas de BoostSport van a ir
                 </span>
               </div>
 
