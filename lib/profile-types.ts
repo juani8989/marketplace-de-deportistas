@@ -4,6 +4,8 @@ export const ROLES: Role[] = ['deportista', 'empresa', 'evento']
 
 export type TimelineEntry = { year: string; text: string }
 
+export type GalleryPhoto = { src: string; caption: string; credit?: string; sourceUrl?: string }
+
 export type AthleteProfile = {
   kind: 'deportista'
   firstName: string
@@ -22,6 +24,7 @@ export type AthleteProfile = {
   studies: string
   recognitions: string
   timeline: TimelineEntry[]
+  gallery?: GalleryPhoto[]
   socials: { instagram: string; tiktok: string; x: string; youtube: string }
   needs: string[]
   needsDetail: string
