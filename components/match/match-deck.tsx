@@ -14,6 +14,7 @@ export function MatchDeck() {
   const nav = useNav()
   const { data, isLoading, mutate } = useSWR('deck', () => getDeck())
   const [dragX, setDragX] = useState(0)
+  const [refreshing, setRefreshing] = useState(false)
   const [leaving, setLeaving] = useState<'left' | 'right' | null>(null)
   const [matched, setMatched] = useState<{ card: DeckCard; matchId?: number } | null>(null)
   const start = useRef<number | null>(null)
@@ -73,9 +74,18 @@ export function MatchDeck() {
           <div className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border text-center">
             <Sparkles className="size-8 text-olympic-yellow" />
             <p className="font-display text-2xl font-semibold">No hay más perfiles</p>
-            <p className="max-w-60 text-sm text-muted-foreground">Volvé más tarde o revisá tus matches en Mensajes.</p>
-            <button type="button" onClick={() => mutate()} className="flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold">
-              <RotateCcw className="size-4" />
+            <p className="max-w-60 text-sm text-muted-foreground">Actualizá para volver a ver los perfiles que pasaste y sumar más matches.</p>
+            <button
+              type="button"
+              disabled={refreshing}
+              onClick={async () => {
+                setRefreshing(true)
+                await mutate(getDeck({ recycle: true }), { revalidate: false })
+                setRefreshing(false)
+              }}
+              className="flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold disabled:opacity-60"
+            >
+              {refreshing ? <Loader2 className="size-4 animate-spin" /> : <RotateCcw className="size-4" />}
               Actualizar
             </button>
           </div>
