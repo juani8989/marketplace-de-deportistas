@@ -13,7 +13,7 @@ import { AthleteProfileForm } from '@/components/auth/athlete-profile-form'
 import type { AthleteProfile } from '@/lib/profile-types'
 import { cn } from '@/lib/utils'
 
-type Section = 'publicaciones' | 'metas' | 'logros'
+type Section = 'publicaciones' | 'fotos' | 'metas' | 'logros'
 
 export function AthleteProfileView({ profileKey }: { profileKey: string }) {
   const nav = useNav()
@@ -185,7 +185,7 @@ export function AthleteProfileView({ profileKey }: { profileKey: string }) {
       ) : null}
 
       <div role="tablist" aria-label="Contenido del perfil" className="sticky top-0 z-10 flex border-b border-border bg-background">
-        {(['publicaciones', 'metas', 'logros'] as Section[]).map((s) => (
+        {((p.gallery?.length ? ['publicaciones', 'fotos', 'metas', 'logros'] : ['publicaciones', 'metas', 'logros']) as Section[]).map((s) => (
           <button
             key={s}
             type="button"
@@ -221,6 +221,32 @@ export function AthleteProfileView({ profileKey }: { profileKey: string }) {
           ) : (
             <p className="py-8 text-center text-sm text-muted-foreground">{data.isMe ? 'Publicá tu primer día desde Compañeros.' : 'Todavía no publicó nada.'}</p>
           )
+        ) : null}
+
+        {section === 'fotos' && p.gallery?.length ? (
+          <ul className="grid grid-cols-2 gap-2">
+            {p.gallery.map((photo, i) => (
+              <li key={photo.src} className={cn('flex flex-col gap-1', i === 0 && 'col-span-2')}>
+                <div className={cn('relative overflow-hidden rounded-xl bg-card', i === 0 ? 'aspect-video' : 'aspect-square')}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photo.src} alt={photo.caption} className="absolute inset-0 size-full object-cover" />
+                </div>
+                <p className="text-xs leading-snug">{photo.caption}</p>
+                {photo.credit ? (
+                  <p className="text-[11px] text-muted-foreground">
+                    Foto:{' '}
+                    {photo.sourceUrl ? (
+                      <a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                        {photo.credit}
+                      </a>
+                    ) : (
+                      photo.credit
+                    )}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
         ) : null}
 
         {section === 'metas' ? (
