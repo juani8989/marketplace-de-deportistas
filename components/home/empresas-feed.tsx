@@ -21,9 +21,9 @@ export function EmpresasFeed() {
 
           <div className="relative flex h-full flex-col justify-end gap-4 overflow-y-auto px-4 pb-24 pt-36">
             <header className="flex items-center gap-3">
-              <span className="flex size-12 items-center justify-center rounded-xl bg-olympic-yellow font-display text-lg font-bold text-olympic-black">{company.initials}</span>
+              <span className="flex size-12 items-center justify-center rounded-xl bg-olympic-yellow font-display text-lg font-semibold text-olympic-black">{company.initials}</span>
               <div className="flex min-w-0 flex-col leading-tight">
-                <h2 className="font-display text-3xl font-bold uppercase tracking-tight">{company.name}</h2>
+                <h2 className="font-display text-3xl font-semibold">{company.name}</h2>
                 <span className="text-sm text-muted-foreground">{company.industry}</span>
               </div>
             </header>
@@ -117,7 +117,7 @@ export function ApplySheet({ company, challenge, onClose }: { company: Company; 
           <span className="flex size-16 items-center justify-center rounded-full bg-olympic-green text-olympic-white">
             <Zap className="size-8" />
           </span>
-          <h3 className="font-display text-3xl font-bold uppercase">{result.matched ? '¡Es un match!' : 'Postulación enviada'}</h3>
+          <h3 className="font-display text-3xl font-semibold">{result.matched ? '¡Es un match!' : 'Postulación enviada'}</h3>
           <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
             {result.matched
               ? `${company.name} también quiere trabajar con vos. Ya tenés una propuesta esperando en Mensajes.`

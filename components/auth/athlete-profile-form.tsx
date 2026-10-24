@@ -54,7 +54,7 @@ export function AthleteProfileForm({
             <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-olympic-blue">
               <BadgeCheck className="size-4" /> {p.identityVerified ? 'Identidad verificada' : 'Encontrado en la web'}
             </p>
-            <p className="font-display text-xl font-extrabold uppercase leading-tight">
+            <p className="font-display text-xl font-semibold leading-tight">
               {p.firstName} {p.lastName}
             </p>
             {p.summary ? <p className="text-sm leading-relaxed text-olympic-white/75 text-pretty">{p.summary}</p> : null}

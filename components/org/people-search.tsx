@@ -9,7 +9,7 @@ import { PartyAvatar } from '@/components/app/kit'
 import { InviteButton } from '@/components/org/invite-button'
 import { cn } from '@/lib/utils'
 
-const labels: Record<SearchRole, string> = { deportista: 'Deportistas', empresa: 'Empresas', evento: 'Eventos' }
+const labels: Record<SearchRole, string> = { deportista: 'Deportistas', empresa: 'Sponsors', evento: 'Eventos' }
 
 export function PeopleSearch({ roles }: { roles: SearchRole[] }) {
   const nav = useNav()
@@ -20,7 +20,7 @@ export function PeopleSearch({ roles }: { roles: SearchRole[] }) {
 
   return (
     <section aria-labelledby="search-title" className="flex flex-col gap-3">
-      <h2 id="search-title" className="font-display text-xl font-bold uppercase tracking-tight">
+      <h2 id="search-title" className="font-display text-xl font-semibold">
         Buscar e invitar
       </h2>
       <div role="tablist" aria-label="Tipo de perfil" className="flex gap-2">

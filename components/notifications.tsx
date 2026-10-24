@@ -44,7 +44,7 @@ export function NotificationsPanel({ onClose }: { onClose: () => void }) {
   return (
     <div className="absolute inset-0 z-40 flex flex-col bg-background animate-in fade-in duration-200" role="dialog" aria-modal="true" aria-labelledby="notif-title">
       <div className="flex items-center justify-between border-b border-border px-4 py-4">
-        <h2 id="notif-title" className="font-display text-2xl font-bold uppercase">
+        <h2 id="notif-title" className="font-display text-2xl font-semibold">
           Notificaciones
         </h2>
         <Button variant="ghost" size="icon" onClick={onClose} aria-label="Cerrar">

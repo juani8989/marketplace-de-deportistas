@@ -36,7 +36,7 @@ export function AiScout() {
     <section aria-labelledby="scout-title" className="flex flex-col gap-3 rounded-3xl border border-olympic-blue/40 bg-olympic-blue/10 p-4">
       <div className="flex items-center gap-2">
         <Sparkles className="size-5 text-olympic-blue" aria-hidden />
-        <h2 id="scout-title" className="font-display text-xl font-bold uppercase tracking-tight">
+        <h2 id="scout-title" className="font-display text-xl font-semibold">
           Scout con IA
         </h2>
       </div>
@@ -84,7 +84,7 @@ export function AiScout() {
                       <span className="truncate text-xs text-muted-foreground">{r.party.subtitle}</span>
                     </span>
                   </button>
-                  <span className="shrink-0 rounded-full bg-olympic-yellow px-2.5 py-1 text-xs font-extrabold text-olympic-black">{r.score}%</span>
+                  <span className="shrink-0 rounded-full bg-metal-gold px-2.5 py-1 font-mono text-xs font-semibold text-[#0a0a0a]">{r.score}</span>
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">{r.reason}</p>
                 {r.needs.length ? (

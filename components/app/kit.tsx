@@ -13,7 +13,7 @@ const roleRing: Record<Party['role'], string> = {
 
 export function PartyAvatar({ party, className }: { party: Pick<Party, 'name' | 'image' | 'initials' | 'role'>; className?: string }) {
   return (
-    <span className={cn('relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-secondary font-display text-sm font-bold ring-2', roleRing[party.role], className)}>
+    <span className={cn('relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-secondary font-display text-sm font-semibold ring-2', roleRing[party.role], className)}>
       {party.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={party.image} alt="" className="absolute inset-0 size-full object-cover" />
@@ -41,7 +41,7 @@ export function Sheet({ title, onClose, children, tall }: { title: string; onClo
         className={cn('relative flex max-h-[88%] flex-col rounded-t-3xl border-t border-border bg-card text-card-foreground', tall && 'h-[88%]')}
       >
         <header className="flex items-center justify-between gap-2 border-b border-border px-5 py-4">
-          <h2 className="font-display text-xl font-bold uppercase tracking-tight">{title}</h2>
+          <h2 className="font-display text-xl font-semibold">{title}</h2>
           <button type="button" onClick={onClose} aria-label="Cerrar" className="flex size-9 items-center justify-center rounded-full bg-secondary">
             <X className="size-4" />
           </button>

@@ -195,7 +195,7 @@ export function AthleteSignup() {
 
       {step === 'candidatos' ? (
         <div className="flex flex-col gap-4">
-          <h3 className="font-display text-2xl font-extrabold uppercase">
+          <h3 className="font-display text-2xl font-semibold">
             {candidates.length ? '¿Sos alguno de estos?' : 'No te encontramos en la web'}
           </h3>
           {candidates.length ? (
@@ -244,7 +244,7 @@ export function AthleteSignup() {
 
       {(step === 'selfie' || step === 'verificando') && chosen ? (
         <div className="flex flex-col gap-4">
-          <h3 className="font-display text-2xl font-extrabold uppercase">Confirmá que sos vos</h3>
+          <h3 className="font-display text-2xl font-semibold">Confirmá que sos vos</h3>
           <div className="flex items-center gap-3 rounded-xl border border-olympic-white/15 p-3">
             <img src={chosen.image!} alt={chosen.title} referrerPolicy="no-referrer" className="size-14 rounded-full object-cover object-top" />
             <p className="text-sm leading-relaxed text-olympic-white/70">

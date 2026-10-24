@@ -13,7 +13,7 @@ export function Inbox() {
   return (
     <div className="flex h-full flex-col gap-4 overflow-y-auto px-4 pb-24 pt-20">
       <header className="flex flex-col gap-0.5">
-        <h1 className="font-display text-3xl font-bold uppercase tracking-tight">Mensajes</h1>
+        <h1 className="font-display text-3xl font-semibold">Mensajes</h1>
         <p className="text-sm text-muted-foreground">Tus matches y acuerdos de patrocinio.</p>
       </header>
 
@@ -22,7 +22,7 @@ export function Inbox() {
       ) : !data?.length ? (
         <div className="mt-10 flex flex-col items-center gap-3 text-center">
           <MessageCircle className="size-8 text-olympic-blue" />
-          <p className="font-display text-2xl font-bold uppercase">Todavía no hay matches</p>
+          <p className="font-display text-2xl font-semibold">Todavía no hay matches</p>
           <p className="max-w-64 text-sm text-muted-foreground">Cuando vos y una {nav.role === 'deportista' ? 'empresa' : 'persona deportista'} se elijan, la conversación aparece acá.</p>
           <button type="button" onClick={() => nav.goTo('match')} className="rounded-full bg-olympic-blue px-5 py-2.5 text-sm font-bold text-olympic-white">
             Ir a Match

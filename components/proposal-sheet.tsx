@@ -28,7 +28,7 @@ export function ProposalSheet({ athleteId, onClose }: { athleteId: string; onClo
         className="flex w-full flex-col gap-4 rounded-t-3xl bg-card p-5 pb-8 animate-in slide-in-from-bottom duration-300"
       >
         <div className="flex items-center justify-between">
-          <h2 id="proposal-title" className="font-display text-2xl font-bold uppercase">
+          <h2 id="proposal-title" className="font-display text-2xl font-semibold">
             Propuesta para {athlete.name.split(' ')[0]}
           </h2>
           <Button variant="ghost" size="icon" onClick={onClose} aria-label="Cerrar">

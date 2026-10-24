@@ -37,7 +37,7 @@ export function EventosFeed() {
 
             <div className="relative flex h-full flex-col justify-end gap-4 px-4 pb-24 pt-36">
               <span className="self-start rounded-full bg-olympic-green px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-olympic-white">{event.kind}</span>
-              <h2 className="text-balance font-display text-4xl font-bold uppercase leading-none tracking-tight">{event.name}</h2>
+              <h2 className="text-balance font-display text-4xl font-semibold leading-none">{event.name}</h2>
               <div className="flex flex-col gap-1 text-sm">
                 <span className="flex items-center gap-2">
                   <CalendarDays className="size-4 text-olympic-yellow" />

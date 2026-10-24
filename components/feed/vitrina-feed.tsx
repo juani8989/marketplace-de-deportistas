@@ -52,7 +52,7 @@ function VitrinaSlide({ post, index }: { post: VitrinaPost; index: number }) {
           </Chip>
         </div>
         <AthleteTag athlete={athlete} />
-        <h2 className="font-display text-4xl font-extrabold uppercase leading-none text-balance">{post.title}</h2>
+        <h2 className="font-display text-4xl font-semibold leading-none text-balance">{post.title}</h2>
         <p className="text-sm text-muted-foreground">{post.event}</p>
         <div className="flex flex-col gap-1.5 rounded-xl bg-background/70 p-3 backdrop-blur">
           <div className="flex justify-between text-xs">
@@ -75,7 +75,7 @@ function VitrinaSlide({ post, index }: { post: VitrinaPost; index: number }) {
         <AthleteTag athlete={athlete} />
         <div className="flex flex-col gap-2 rounded-2xl bg-background/80 p-4 backdrop-blur">
           <span className="text-xs uppercase tracking-wide text-muted-foreground">{post.metric} · marca personal</span>
-          <span className="font-display text-5xl font-extrabold leading-none">{post.current}</span>
+          <span className="font-display text-5xl font-semibold leading-none">{post.current}</span>
           <Sparkline points={post.points} />
           <span className="flex items-center gap-1.5 text-sm font-semibold text-accent">
             <TrendingDown className="size-4" /> {post.summary}
@@ -102,7 +102,7 @@ function VitrinaSlide({ post, index }: { post: VitrinaPost; index: number }) {
             {unlocked ? <Unlock className="size-3.5" /> : <Lock className="size-3.5" />} Top Secret
           </Chip>
           <AthleteTag athlete={athlete} />
-          <h2 className="font-display text-3xl font-bold uppercase leading-none text-balance">{post.title}</h2>
+          <h2 className="font-display text-3xl font-semibold leading-none text-balance">{post.title}</h2>
           {unlocked ? (
             <ul className="flex flex-col gap-2 rounded-xl bg-background/80 p-3 text-sm leading-relaxed backdrop-blur">
               {post.content.map((line) => (

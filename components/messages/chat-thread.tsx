@@ -136,7 +136,7 @@ function Bubble({ message, onRespond }: { message: ThreadMessage; onRespond: (id
     return (
       <div className={cn('flex w-[85%] flex-col gap-3 rounded-2xl border-2 p-4', message.mine ? 'self-end border-olympic-blue' : 'self-start border-olympic-yellow')}>
         <div className="flex items-center justify-between gap-2">
-          <span className="flex items-center gap-2 font-display text-lg font-bold uppercase">
+          <span className="flex items-center gap-2 font-display text-lg font-semibold">
             <Handshake className="size-5 text-olympic-yellow" />
             {meta.type}
           </span>
