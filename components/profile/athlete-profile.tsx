@@ -87,7 +87,7 @@ export function AthleteProfileView({ profileKey }: { profileKey: string }) {
       <section className="relative flex flex-col items-center gap-3 px-4 pb-5 pt-20 text-center">
         <PartyAvatar party={data.party} className="size-24 ring-4" />
         <div className="flex flex-col items-center gap-1">
-          <h1 className="flex items-center gap-1.5 font-display text-3xl font-bold uppercase tracking-tight">
+          <h1 className="flex items-center gap-1.5 font-display text-3xl font-semibold">
             {data.party.name}
             {p.identityVerified ? <BadgeCheck className="size-6 text-olympic-blue" aria-label="Identidad verificada" /> : null}
           </h1>
@@ -100,7 +100,7 @@ export function AthleteProfileView({ profileKey }: { profileKey: string }) {
         <dl className="grid w-full grid-cols-4 gap-1 rounded-2xl bg-card p-3">
           {stats.map((s) => (
             <div key={s.label} className="flex flex-col items-center">
-              <dd className="font-display text-2xl font-bold">{compactNumber(s.value)}</dd>
+              <dd className="font-display text-2xl font-semibold">{compactNumber(s.value)}</dd>
               <dt className="text-[11px] text-muted-foreground">{s.label}</dt>
             </div>
           ))}
@@ -250,7 +250,7 @@ export function AthleteProfileView({ profileKey }: { profileKey: string }) {
                 <ol className="flex flex-col gap-3 border-l-2 border-olympic-green pl-4">
                   {p.timeline.map((t) => (
                     <li key={`${t.year}-${t.text}`} className="flex flex-col text-sm">
-                      <span className="font-display text-lg font-bold text-olympic-green">{t.year}</span>
+                      <span className="font-display text-lg font-semibold text-olympic-green">{t.year}</span>
                       <span className="leading-relaxed">{t.text}</span>
                     </li>
                   ))}

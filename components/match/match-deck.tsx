@@ -58,7 +58,7 @@ export function MatchDeck() {
   return (
     <div className="flex h-full flex-col gap-4 px-4 pb-24 pt-20">
       <header className="flex flex-col gap-0.5">
-        <h1 className="font-display text-3xl font-bold uppercase tracking-tight">Match</h1>
+        <h1 className="font-display text-3xl font-semibold">Match</h1>
         <p className="text-sm text-muted-foreground">
           {isAthlete ? 'Deslizá a la derecha a las marcas que querés que te patrocinen.' : 'Deslizá a la derecha a los deportistas que querés como cara de tu marca.'}
         </p>
@@ -72,7 +72,7 @@ export function MatchDeck() {
         ) : !card ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border text-center">
             <Sparkles className="size-8 text-olympic-yellow" />
-            <p className="font-display text-2xl font-bold uppercase">No hay más perfiles</p>
+            <p className="font-display text-2xl font-semibold">No hay más perfiles</p>
             <p className="max-w-60 text-sm text-muted-foreground">Volvé más tarde o revisá tus matches en Mensajes.</p>
             <button type="button" onClick={() => mutate()} className="flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold">
               <RotateCcw className="size-4" />
@@ -110,7 +110,7 @@ export function MatchDeck() {
 
       {matched ? (
         <div role="dialog" aria-modal="true" aria-label="Nuevo match" className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-5 bg-background/95 px-8 text-center">
-          <p className="font-display text-5xl font-bold uppercase leading-none text-olympic-yellow">¡Es un match!</p>
+          <p className="font-display text-5xl font-semibold leading-none text-olympic-yellow">¡Es un match!</p>
           <div className="flex items-center gap-3">
             {nav.account ? (
               <PartyAvatar
@@ -169,16 +169,16 @@ function Card({
         // eslint-disable-next-line @next/next/no-img-element
         <img src={card.party.image} alt="" draggable={false} className="absolute inset-0 size-full object-cover" />
       ) : (
-        <div aria-hidden className="absolute inset-0 flex items-center justify-center bg-secondary font-display text-8xl font-bold text-muted-foreground">
+        <div aria-hidden className="absolute inset-0 flex items-center justify-center bg-secondary font-display text-8xl font-semibold text-muted-foreground">
           {card.party.initials}
         </div>
       )}
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
 
-      <span style={{ opacity: likeOpacity }} className="absolute left-5 top-6 -rotate-12 rounded-lg border-4 border-olympic-green px-3 py-1 font-display text-3xl font-bold uppercase text-olympic-green">
+      <span style={{ opacity: likeOpacity }} className="absolute left-5 top-6 -rotate-12 rounded-lg border-4 border-olympic-green px-3 py-1 font-display text-3xl font-semibold text-olympic-green">
         Me interesa
       </span>
-      <span style={{ opacity: nopeOpacity }} className="absolute right-5 top-6 rotate-12 rounded-lg border-4 border-olympic-red px-3 py-1 font-display text-3xl font-bold uppercase text-olympic-red">
+      <span style={{ opacity: nopeOpacity }} className="absolute right-5 top-6 rotate-12 rounded-lg border-4 border-olympic-red px-3 py-1 font-display text-3xl font-semibold text-olympic-red">
         Paso
       </span>
 
@@ -189,7 +189,7 @@ function Card({
         </div>
         <div className="flex items-end justify-between gap-3">
           <div className="flex min-w-0 flex-col">
-            <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight">{card.party.name}</h2>
+            <h2 className="font-display text-4xl font-semibold leading-none">{card.party.name}</h2>
             <span className="text-sm text-muted-foreground">{card.party.subtitle}</span>
           </div>
           {onOpenProfile ? (

@@ -35,7 +35,7 @@ function AthleteCard({ candidate, onChanged }: { candidate: Candidate; onChanged
       <div className="flex items-center gap-3">
         <PartyAvatar party={candidate.party} className="size-14 text-base" />
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-display text-lg font-bold uppercase leading-tight">{candidate.party.name}</h3>
+          <h3 className="truncate font-display text-lg font-semibold leading-tight">{candidate.party.name}</h3>
           <p className="truncate text-xs text-muted-foreground">{candidate.party.subtitle}</p>
         </div>
       </div>

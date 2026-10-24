@@ -42,14 +42,14 @@ export function OrgProfileView({ viewer }: { viewer: Viewer }) {
           <PartyAvatar party={{ name: profile.orgName, initials: profile.orgName.slice(0, 2).toUpperCase(), role: profile.kind }} className="size-24 ring-4" />
         )}
         <div className="flex flex-col gap-1">
-          <h1 className="text-balance font-display text-3xl font-bold uppercase tracking-tight">{profile.orgName}</h1>
+          <h1 className="text-balance font-display text-3xl font-semibold">{profile.orgName}</h1>
           <p className="text-sm text-muted-foreground">{profile.category}</p>
         </div>
         {profile.description ? <p className="text-pretty text-sm leading-relaxed">{profile.description}</p> : null}
         <dl className="grid w-full grid-cols-3 gap-1 rounded-2xl bg-card p-3">
           {stats.map((s) => (
             <div key={s.label} className="flex flex-col items-center">
-              <dd className="font-display text-2xl font-bold">{s.value}</dd>
+              <dd className="font-display text-2xl font-semibold">{s.value}</dd>
               <dt className="text-[11px] text-muted-foreground">{s.label}</dt>
             </div>
           ))}
@@ -114,7 +114,7 @@ export function OrgProfileView({ viewer }: { viewer: Viewer }) {
 
       {isCompany && sponsored.length ? (
         <section aria-labelledby="sponsored-title" className="flex flex-col gap-3">
-          <h2 id="sponsored-title" className="font-display text-xl font-bold uppercase tracking-tight">
+          <h2 id="sponsored-title" className="font-display text-xl font-semibold">
             Nuestros sponsoreados
           </h2>
           <ul className="-mx-4 flex gap-3 overflow-x-auto px-4 no-scrollbar">
@@ -136,7 +136,7 @@ export function OrgProfileView({ viewer }: { viewer: Viewer }) {
 
       {isCompany && merch.length ? (
         <section aria-labelledby="merch-title" className="flex flex-col gap-3">
-          <h2 id="merch-title" className="font-display text-xl font-bold uppercase tracking-tight">
+          <h2 id="merch-title" className="font-display text-xl font-semibold">
             Tienda
           </h2>
           <ul className="grid grid-cols-2 gap-3">
@@ -145,7 +145,7 @@ export function OrgProfileView({ viewer }: { viewer: Viewer }) {
                 <img src={m.image || '/placeholder.svg'} alt={m.name} className="aspect-square w-full rounded-xl object-cover" />
                 <div className="flex flex-col px-1 pb-1">
                   <span className="text-sm font-semibold leading-tight">{m.name}</span>
-                  <span className="font-display text-lg font-bold text-olympic-green">{m.price}</span>
+                  <span className="font-display text-lg font-semibold text-olympic-green">{m.price}</span>
                 </div>
               </li>
             ))}

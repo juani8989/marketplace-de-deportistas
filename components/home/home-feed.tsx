@@ -13,7 +13,7 @@ type Segment = 'companeros' | 'empresas' | 'eventos' | 'deportistas' | 'marcas'
 
 const labels: Record<Segment, string> = {
   companeros: 'Compañeros',
-  empresas: 'Empresas',
+  empresas: 'Sponsors',
   eventos: 'Eventos',
   deportistas: 'Deportistas',
   marcas: 'Marcas',

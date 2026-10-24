@@ -30,7 +30,7 @@ export function EventBrandsFeed() {
               ) : null}
               <div className="flex flex-col gap-3 p-4">
                 <div>
-                  <h3 className="font-display text-xl font-bold uppercase leading-tight">{b.party.name}</h3>
+                  <h3 className="font-display text-xl font-semibold leading-tight">{b.party.name}</h3>
                   <p className="text-xs text-muted-foreground">{b.party.subtitle}</p>
                 </div>
                 {b.about ? <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">{b.about}</p> : null}

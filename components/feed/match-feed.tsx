@@ -12,7 +12,7 @@ function AffinityBib({ value, label = 'afinidad' }: { value: number; label?: str
   return (
     <div className="flex w-24 shrink-0 flex-col items-center rounded-lg border-2 border-accent-foreground/20 bg-accent px-2 py-2 text-accent-foreground shadow-lg">
       <span className="text-[10px] font-bold uppercase tracking-widest">BoostSport</span>
-      <span className="font-display text-4xl font-extrabold leading-none">{value}%</span>
+      <span className="font-display text-4xl font-semibold leading-none">{value}%</span>
       <span className="text-[10px] font-bold uppercase tracking-wide">{label}</span>
     </div>
   )
@@ -42,7 +42,7 @@ function CalloutSlide({ callout, index }: { callout: Callout; index: number }) {
         <div className="flex flex-col gap-2">
           <Chip tone="blue">Convocatoria · {callout.dealType}</Chip>
           <div className="flex items-center gap-2">
-            <span className="flex size-9 items-center justify-center rounded-full bg-foreground font-display text-sm font-bold text-background">
+            <span className="flex size-9 items-center justify-center rounded-full bg-foreground font-display text-sm font-semibold text-background">
               {callout.brandInitials}
             </span>
             <span className="font-semibold">{callout.brand}</span>
@@ -50,7 +50,7 @@ function CalloutSlide({ callout, index }: { callout: Callout; index: number }) {
         </div>
         <AffinityBib value={callout.affinity} />
       </div>
-      <h2 className="font-display text-3xl font-bold uppercase leading-none text-balance">{callout.headline}</h2>
+      <h2 className="font-display text-3xl font-semibold leading-none text-balance">{callout.headline}</h2>
       <div className="grid grid-cols-2 gap-2 rounded-xl bg-background/75 p-3 text-sm backdrop-blur">
         <div className="flex flex-col gap-1">
           <span className="text-xs font-semibold uppercase text-muted-foreground">Buscan</span>
@@ -130,15 +130,15 @@ function CompanyAthleteSlide({
       <dl className="grid grid-cols-3 gap-2 rounded-xl bg-background/75 p-3 text-center backdrop-blur">
         <div className="flex flex-col">
           <dt className="text-[11px] uppercase text-muted-foreground">Seguidores</dt>
-          <dd className="font-display text-xl font-bold">{athlete.followers}</dd>
+          <dd className="font-display text-xl font-semibold">{athlete.followers}</dd>
         </div>
         <div className="flex flex-col">
           <dt className="text-[11px] uppercase text-muted-foreground">Listo sponsor</dt>
-          <dd className="font-display text-xl font-bold">{athlete.sponsorReady}%</dd>
+          <dd className="font-display text-xl font-semibold">{athlete.sponsorReady}%</dd>
         </div>
         <div className="flex flex-col">
           <dt className="text-[11px] uppercase text-muted-foreground">Ciudad</dt>
-          <dd className="truncate font-display text-xl font-bold">{athlete.city}</dd>
+          <dd className="truncate font-display text-xl font-semibold">{athlete.city}</dd>
         </div>
       </dl>
       <div className="flex items-center gap-3">

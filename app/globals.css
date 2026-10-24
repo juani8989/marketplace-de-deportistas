@@ -5,14 +5,17 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: 'Barlow', 'Barlow Fallback', system-ui, sans-serif;
-  --font-display: 'Barlow Condensed', 'Barlow Condensed Fallback', system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-geist-sans), system-ui, sans-serif;
   --color-olympic-blue: #0081c8;
   --color-olympic-yellow: #fcb131;
-  --color-olympic-black: #000000;
+  --color-olympic-silver: #c8c8c8;
   --color-olympic-green: #00a651;
   --color-olympic-red: #ee334e;
-  --color-olympic-white: #ffffff;
+  /* Legacy names kept so existing classes follow the neutral brand palette. */
+  --color-olympic-black: var(--background);
+  --color-olympic-white: var(--foreground);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -40,27 +43,51 @@
 }
 
 :root {
+  --background: #fafafa;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f2f2;
+  --secondary-foreground: #0a0a0a;
+  --muted: #f2f2f2;
+  --muted-foreground: #666666;
+  --accent: #fcb131;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ee334e;
+  --border: #eaeaea;
+  --input: #eaeaea;
+  --ring: #0081c8;
+  --radius: 0.875rem;
+
+  --metal-blue: linear-gradient(90deg, #005a8c 0%, #0081c8 35%, #9ad6f5 50%, #0081c8 65%, #005a8c 100%);
+  --metal-yellow: linear-gradient(90deg, #b97d08 0%, #fcb131 35%, #ffe7a8 50%, #fcb131 65%, #b97d08 100%);
+  --metal-silver: linear-gradient(90deg, #4a4a4a 0%, #c8c8c8 35%, #ffffff 50%, #c8c8c8 65%, #4a4a4a 100%);
+  --metal-green: linear-gradient(90deg, #006b34 0%, #00a651 35%, #9be6bb 50%, #00a651 65%, #006b34 100%);
+  --metal-red: linear-gradient(90deg, #a3162e 0%, #ee334e 35%, #ffa3b1 50%, #ee334e 65%, #a3162e 100%);
+  --metal-gold: linear-gradient(90deg, #b97d08 0%, #ffe7a8 50%, #fcb131 100%);
+  --brand-line: linear-gradient(90deg, #0081c8 0%, #fcb131 25%, #c8c8c8 50%, #00a651 75%, #ee334e 100%);
+}
+
+.dark {
   color-scheme: dark;
-  /* ink navy, off-white, cobalt, medal gold */
-  --background: oklch(0.17 0.025 258);
-  --foreground: oklch(0.97 0.008 90);
-  --card: oklch(0.22 0.03 258);
-  --card-foreground: oklch(0.97 0.008 90);
-  --popover: oklch(0.22 0.03 258);
-  --popover-foreground: oklch(0.97 0.008 90);
-  --primary: oklch(0.6 0.2 260);
-  --primary-foreground: oklch(0.97 0.008 90);
-  --secondary: oklch(0.27 0.03 258);
-  --secondary-foreground: oklch(0.97 0.008 90);
-  --muted: oklch(0.27 0.03 258);
-  --muted-foreground: oklch(0.74 0.02 258);
-  --accent: oklch(0.84 0.15 85);
-  --accent-foreground: oklch(0.17 0.025 258);
-  --destructive: oklch(0.65 0.2 25);
-  --border: oklch(0.97 0.008 90 / 14%);
-  --input: oklch(0.97 0.008 90 / 18%);
-  --ring: oklch(0.6 0.2 260);
-  --radius: 0.75rem;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --card: #111111;
+  --card-foreground: #ededed;
+  --popover: #111111;
+  --popover-foreground: #ededed;
+  --primary: #ededed;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ededed;
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1a1;
+  --border: #2e2e2e;
+  --input: #2e2e2e;
 }
 
 @layer base {
@@ -70,6 +97,12 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+  h1,
+  h2,
+  h3,
+  .font-display {
+    letter-spacing: -0.02em;
+  }
 }
 
 @layer utilities {
@@ -78,6 +111,32 @@
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .bg-metal-blue {
+    background-image: var(--metal-blue);
+  }
+  .bg-metal-yellow {
+    background-image: var(--metal-yellow);
+  }
+  .bg-metal-silver {
+    background-image: var(--metal-silver);
+  }
+  .bg-metal-green {
+    background-image: var(--metal-green);
+  }
+  .bg-metal-red {
+    background-image: var(--metal-red);
+  }
+  .bg-metal-gold {
+    background-image: var(--metal-gold);
+  }
+  .bg-brand-line {
+    background-image: var(--brand-line);
   }
 }
 

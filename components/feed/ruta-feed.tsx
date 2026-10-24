@@ -22,10 +22,10 @@ function RutaSlide({ post, index }: { post: RutaPost; index: number }) {
           {athlete.seekingSponsor ? <Chip>Busca sponsor</Chip> : null}
         </div>
         <AthleteTag athlete={athlete} />
-        <h2 className="font-display text-3xl font-bold uppercase leading-none text-balance">{post.title}</h2>
+        <h2 className="font-display text-3xl font-semibold leading-none text-balance">{post.title}</h2>
         <div className="flex flex-col gap-2 rounded-xl bg-background/70 p-3 backdrop-blur">
           <div className="flex items-baseline justify-between">
-            <span className="font-display text-2xl font-bold">{money(post.raised)}</span>
+            <span className="font-display text-2xl font-semibold">{money(post.raised)}</span>
             <span className="text-xs text-muted-foreground">de {money(post.goal)} · {pct} %</span>
           </div>
           <ProgressBar value={pct} />
@@ -53,10 +53,10 @@ function RutaSlide({ post, index }: { post: RutaPost; index: number }) {
         <AthleteTag athlete={athlete} />
         <div className="flex items-end gap-3">
           <div className="flex flex-col items-center rounded-xl bg-accent px-3 py-2 text-accent-foreground">
-            <span className="font-display text-4xl font-extrabold leading-none">{post.daysLeft}</span>
+            <span className="font-display text-4xl font-semibold leading-none">{post.daysLeft}</span>
             <span className="text-[11px] font-bold uppercase">días</span>
           </div>
-          <h2 className="font-display text-3xl font-bold uppercase leading-none text-balance">{post.title}</h2>
+          <h2 className="font-display text-3xl font-semibold leading-none text-balance">{post.title}</h2>
         </div>
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between text-xs">

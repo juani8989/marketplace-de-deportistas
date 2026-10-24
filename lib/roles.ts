@@ -12,7 +12,7 @@ export const roleConfig: Record<
   }
 > = {
   deportista: {
-    label: 'Deportista',
+    label: 'Atleta',
     tagline: 'Mostrá tu camino y conseguí sponsors',
     bg: 'bg-olympic-blue',
     text: 'text-olympic-white',
@@ -20,7 +20,7 @@ export const roleConfig: Record<
     button: 'bg-olympic-blue text-olympic-white',
   },
   empresa: {
-    label: 'Empresa / Entidad',
+    label: 'Sponsor',
     tagline: 'Encontrá la cara de tu marca',
     bg: 'bg-olympic-yellow',
     text: 'text-olympic-black',
@@ -28,7 +28,7 @@ export const roleConfig: Record<
     button: 'bg-olympic-yellow text-olympic-black',
   },
   evento: {
-    label: 'Evento / Organización',
+    label: 'Institución',
     tagline: 'Sumá deportistas a tu competencia',
     bg: 'bg-olympic-green',
     text: 'text-olympic-white',

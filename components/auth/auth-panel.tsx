@@ -56,8 +56,8 @@ export function AuthPanel({ role, onClose }: { role: Role; onClose: () => void }
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="auth-title" className="fixed inset-0 z-50 flex overflow-y-auto bg-olympic-black text-olympic-white animate-in fade-in duration-300">
       <aside className={cn('hidden w-2/5 max-w-md flex-col justify-end p-10 md:flex', config.bg, config.text)}>
-        <p className="font-display text-sm font-bold uppercase tracking-[0.3em] opacity-70">¿Quién soy?</p>
-        <p className="font-display text-6xl font-extrabold uppercase leading-none tracking-tight text-balance">{config.label}</p>
+        <p className="font-display text-sm font-semibold tracking-[0.3em] opacity-70">¿Quién soy?</p>
+        <p className="font-display text-6xl font-semibold leading-none text-balance">{config.label}</p>
         <p className="mt-3 text-lg leading-relaxed opacity-90">{config.tagline}</p>
       </aside>
 
@@ -69,7 +69,7 @@ export function AuthPanel({ role, onClose }: { role: Role; onClose: () => void }
 
           <div className="flex flex-col gap-1">
             <span aria-hidden className={cn('h-1.5 w-10 rounded-full md:hidden', config.bg)} />
-            <h2 id="auth-title" className="font-display text-4xl font-extrabold uppercase tracking-tight">
+            <h2 id="auth-title" className="font-display text-4xl font-semibold">
               {view === 'sign-in' ? 'Ingresar' : 'Crear usuario'}
               <span className="block text-lg font-semibold normal-case tracking-normal text-olympic-white/60">{config.label}</span>
             </h2>

@@ -6,25 +6,8 @@ import { enterAsGuest, type Role } from '@/lib/auth-store'
 import { brandLogos, eventImages, roleConfig } from '@/lib/roles'
 import type { FamousAthlete } from '@/lib/wikipedia'
 import { AuthPanel } from '@/components/auth/auth-panel'
-import { BrandLogo } from '@/components/brand-logo'
+import { BrandLine, BrandLogo } from '@/components/brand-logo'
 import { cn } from '@/lib/utils'
-
-function OlympicRings({ className }: { className?: string }) {
-  const rings = [
-    { cx: 60, cy: 60, color: 'var(--color-olympic-blue)' },
-    { cx: 190, cy: 60, color: 'var(--color-olympic-white)' },
-    { cx: 320, cy: 60, color: 'var(--color-olympic-red)' },
-    { cx: 125, cy: 120, color: 'var(--color-olympic-yellow)' },
-    { cx: 255, cy: 120, color: 'var(--color-olympic-green)' },
-  ]
-  return (
-    <svg viewBox="0 0 380 185" aria-hidden className={className}>
-      {rings.map((r) => (
-        <circle key={r.cx} cx={r.cx} cy={r.cy} r={52} fill="none" stroke={r.color} strokeWidth={11} />
-      ))}
-    </svg>
-  )
-}
 
 const reveal =
   'translate-y-6 opacity-0 transition-all duration-500 ease-out md:group-hover:translate-y-0 md:group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100'
@@ -99,7 +82,7 @@ function RolePanel({ role, onSelect, children }: { role: Role; onSelect: () => v
         )}
       >
         <span aria-hidden className={cn('h-1.5 w-10 rounded-full', config.bg, 'transition-colors md:group-hover:bg-current')} />
-        <span className="font-display text-3xl font-extrabold uppercase leading-none tracking-tight text-balance md:text-4xl">
+        <span className="font-display text-3xl font-semibold leading-none text-balance md:text-4xl">
           {config.label}
         </span>
         <span className="text-sm opacity-80 text-pretty">{config.tagline}</span>
@@ -116,15 +99,21 @@ export function WhoAmI({ athletes }: { athletes: FamousAthlete[] }) {
 
   return (
     <main className="relative flex min-h-dvh flex-col overflow-hidden bg-olympic-black text-olympic-white">
-      <OlympicRings className="pointer-events-none absolute left-1/2 top-1/2 w-[min(1100px,140vw)] -translate-x-1/2 -translate-y-1/2 opacity-15" />
-
-      <header className="pointer-events-none relative z-20 flex flex-col items-center gap-2 px-6 pt-10 text-center md:absolute md:inset-x-0 md:top-0">
-        <p>
-          <BrandLogo className="text-2xl tracking-[0.15em] md:text-3xl" />
-        </p>
-        <h1 className="font-display text-6xl font-extrabold uppercase leading-none tracking-tight md:text-8xl">
-          {'¿Quién soy?'}
-        </h1>
+      <BrandLine />
+      <header className="relative z-20 flex flex-col items-center gap-6 px-6 pb-4 pt-8 text-center">
+        <BrandLogo />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/explicado-oscuro.svg"
+          alt="Triángulo de BoostSport que conecta atletas, instituciones y sponsors"
+          width={480}
+          height={400}
+          className="h-auto w-full max-w-sm md:max-w-md"
+        />
+        <div className="flex flex-col items-center gap-2">
+          <p className="eyebrow text-xs text-olympic-white/60">El marketplace del deporte</p>
+          <h1 className="text-4xl font-semibold leading-tight md:text-6xl">{'¿Quién sos?'}</h1>
+        </div>
       </header>
 
       <div className="relative z-10 flex flex-1 flex-col pt-8 md:flex-row md:pt-0">
@@ -144,7 +133,7 @@ export function WhoAmI({ athletes }: { athletes: FamousAthlete[] }) {
         <button
           type="button"
           onClick={enterAsGuest}
-          className="inline-flex items-center gap-2 rounded-full bg-olympic-red px-4 py-2 font-bold text-olympic-white transition-transform hover:scale-105"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
         >
           <Eye className="size-4" /> Entrar como invitado
         </button>
