@@ -36,7 +36,15 @@ export type OrgProfile = {
   website: string
   lookingFor: string
   eventDate?: string
+  description?: string
+  logo?: string
+  sponsored?: SponsoredAthlete[]
+  merch?: MerchItem[]
+  eventInfo?: { distance: string; place: string; requirements: string; signup: string; reach: string }
 }
+
+export type SponsoredAthlete = { key: string; name: string; discipline: string; image?: string; since: string }
+export type MerchItem = { name: string; price: string; image?: string }
 
 export type Account = {
   id: string
