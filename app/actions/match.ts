@@ -53,10 +53,11 @@ type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string }
 const OFFER_TYPES: OfferType[] = ['Producto', 'Dinero', 'Embajador']
 const athleteNeeds = (p: AthleteProfile | OrgProfile) => (p.kind === 'deportista' ? p.needs ?? [] : [])
 
-export async function getDeck(): Promise<DeckCard[]> {
+export async function getDeck(opts?: { recycle?: boolean }): Promise<DeckCard[]> {
   const viewer = await requireViewer()
+  const swipeFilter = opts?.recycle ? and(eq(swipes.userId, viewer.id), eq(swipes.liked, true)) : eq(swipes.userId, viewer.id)
   const [mySwipes, likedMe] = await Promise.all([
-    db.select({ targetId: swipes.targetId }).from(swipes).where(eq(swipes.userId, viewer.id)),
+    db.select({ targetId: swipes.targetId }).from(swipes).where(swipeFilter),
     db.select({ userId: swipes.userId }).from(swipes).where(and(eq(swipes.targetId, viewer.key), eq(swipes.liked, true))),
   ])
   const seen = new Set(mySwipes.map((s) => s.targetId))
@@ -163,7 +164,7 @@ export async function swipe(input: { targetKey: string; liked: boolean; pitch?: 
     const bonus = pitch || challengeId ? 12 : 0
     reciprocal = affinityScore({ discipline, needs: athleteNeeds(viewer.profile) }, company) + bonus >= MATCH_THRESHOLD
   } else if (seedAthlete) {
-    reciprocal = seedAthlete.seekingSponsor
+    reciprocal = seedAthlete.seekingSponsor || seedAffinity(seedAthlete.id) >= 78
   } else {
     const otherId = targetKey.slice(5)
     const [back] = await db

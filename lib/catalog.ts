@@ -336,4 +336,4 @@ export function affinityScore(input: { discipline: string; needs: string[] }, co
   return Math.min(98, 52 + (sportMatch ? 30 : 0) + overlap * 5)
 }
 
-export const MATCH_THRESHOLD = 70
+export const MATCH_THRESHOLD = 60
