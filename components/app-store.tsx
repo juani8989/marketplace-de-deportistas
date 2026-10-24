@@ -58,8 +58,14 @@ const initialNotifications: AppNotification[] = [
   },
 ]
 
-export function AppStoreProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<Mode>('deportista')
+export function AppStoreProvider({
+  children,
+  initialMode = 'deportista',
+}: {
+  children: React.ReactNode
+  initialMode?: Mode
+}) {
+  const [mode, setMode] = useState<Mode>(initialMode)
   const [tab, setTab] = useState<Tab>('ruta')
   const [toggled, setToggled] = useState<Set<string>>(new Set())
   const [unlockedSecrets, setUnlockedSecrets] = useState<Set<string>>(new Set())

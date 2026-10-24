@@ -7,6 +7,12 @@
 @theme inline {
   --font-sans: 'Barlow', 'Barlow Fallback', system-ui, sans-serif;
   --font-display: 'Barlow Condensed', 'Barlow Condensed Fallback', system-ui, sans-serif;
+  --color-olympic-blue: #0081c8;
+  --color-olympic-yellow: #fcb131;
+  --color-olympic-black: #000000;
+  --color-olympic-green: #00a651;
+  --color-olympic-red: #ee334e;
+  --color-olympic-white: #ffffff;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);

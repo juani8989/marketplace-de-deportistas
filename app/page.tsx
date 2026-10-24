@@ -1,10 +1,7 @@
-import { AppShell } from '@/components/app-shell'
-import { AppStoreProvider } from '@/components/app-store'
+import { RootGate } from '@/components/root-gate'
+import { getFamousAthletes } from '@/lib/wikipedia'
 
-export default function Page() {
-  return (
-    <AppStoreProvider>
-      <AppShell />
-    </AppStoreProvider>
-  )
+export default async function Page() {
+  const athletes = await getFamousAthletes()
+  return <RootGate athletes={athletes} />
 }

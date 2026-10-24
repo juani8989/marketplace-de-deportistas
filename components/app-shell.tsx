@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Bell, Handshake, Route, Trophy } from 'lucide-react'
+import { Bell, Handshake, LogOut, Route, Trophy } from 'lucide-react'
+import { signOut, type Account, type Role } from '@/lib/auth-store'
+import { roleConfig } from '@/lib/roles'
 import { useAppStore, type Tab } from '@/components/app-store'
 import { RutaFeed } from '@/components/feed/ruta-feed'
 import { VitrinaFeed } from '@/components/feed/vitrina-feed'
@@ -22,32 +24,37 @@ const tabSubtitle: Record<Tab, { deportista: string; empresa: string }> = {
   match: { deportista: 'Marcas que te buscan', empresa: `Deportistas para ${companyName}` },
 }
 
-function ModeSwitch() {
-  const { mode, setMode } = useAppStore()
+export type Viewer = {
+  role: Role | 'invitado'
+  name: string
+  account?: Account
+}
+
+const roleBadge: Record<Viewer['role'], string> = {
+  deportista: 'bg-olympic-blue text-olympic-white',
+  empresa: 'bg-olympic-yellow text-olympic-black',
+  evento: 'bg-olympic-green text-olympic-white',
+  invitado: 'bg-olympic-red text-olympic-white',
+}
+
+function ViewerChip({ viewer }: { viewer: Viewer }) {
+  const roleLabel = viewer.role === 'invitado' ? 'Invitado' : roleConfig[viewer.role].label.split(' ')[0]
   return (
-    <div role="radiogroup" aria-label="Ver como" className="flex rounded-full bg-background/60 p-1 text-xs font-semibold backdrop-blur">
-      {(['deportista', 'empresa'] as const).map((m) => (
-        <button
-          key={m}
-          type="button"
-          role="radio"
-          aria-checked={mode === m}
-          onClick={() => setMode(m)}
-          className={cn(
-            'rounded-full px-3 py-1.5 capitalize transition-colors',
-            mode === m ? 'bg-foreground text-background' : 'text-foreground',
-          )}
-        >
-          {m}
-        </button>
-      ))}
+    <div className="flex min-w-0 items-center gap-1.5 rounded-full bg-background/60 py-1 pl-1 pr-1 text-xs font-semibold backdrop-blur">
+      <span className={cn('shrink-0 rounded-full px-2 py-1', roleBadge[viewer.role])}>{roleLabel}</span>
+      {viewer.role !== 'invitado' ? <span className="max-w-24 truncate">{viewer.name}</span> : null}
+      <button type="button" onClick={signOut} aria-label="Cerrar sesión" className="flex size-7 shrink-0 items-center justify-center rounded-full hover:bg-foreground/10">
+        <LogOut className="size-3.5" />
+      </button>
     </div>
   )
 }
 
-export function AppShell() {
+export function AppShell({ viewer }: { viewer: Viewer }) {
   const { tab, setTab, mode, unreadCount, markAllRead } = useAppStore()
   const [showNotifications, setShowNotifications] = useState(false)
+  const isGuest = viewer.role === 'invitado'
+  const visibleTabs = isGuest ? tabs.filter((t) => t.id !== 'match') : tabs
 
   return (
     <main className="flex min-h-dvh items-center justify-center md:py-6">
@@ -57,7 +64,12 @@ export function AppShell() {
             <h1 className="font-display text-2xl font-extrabold uppercase tracking-tight">
               Dorsal<span className="text-accent">.</span>
             </h1>
-            <ModeSwitch />
+            <ViewerChip viewer={viewer} />
+            {isGuest ? (
+              <button type="button" onClick={signOut} className="shrink-0 rounded-full bg-olympic-red px-3 py-2 text-xs font-bold text-olympic-white">
+                Crear cuenta
+              </button>
+            ) : (
             <button
               type="button"
               onClick={() => {
@@ -74,19 +86,22 @@ export function AppShell() {
                 </span>
               ) : null}
             </button>
+            )}
           </div>
-          <p className="text-xs font-medium text-muted-foreground">{tabSubtitle[tab][mode]}</p>
+          <p className="text-xs font-medium text-muted-foreground">
+            {isGuest ? `${tabSubtitle[tab][mode]} · modo invitado` : tab === 'match' && viewer.role !== 'deportista' ? `Deportistas para ${viewer.name}` : tabSubtitle[tab][mode]}
+          </p>
         </header>
 
         <div key={`${tab}-${mode}`} className="h-full snap-y snap-mandatory overflow-y-auto no-scrollbar">
           {tab === 'ruta' ? <RutaFeed /> : null}
           {tab === 'vitrina' ? <VitrinaFeed /> : null}
-          {tab === 'match' ? <MatchFeed /> : null}
+          {tab === 'match' && !isGuest ? <MatchFeed /> : null}
         </div>
 
         <nav aria-label="Secciones" className="absolute inset-x-0 bottom-0 z-30 border-t border-border bg-background/90 px-6 pb-4 pt-2 backdrop-blur">
-          <ul className="flex items-end justify-between">
-            {tabs.map(({ id, label, icon: Icon }) => {
+          <ul className={cn('flex items-end', isGuest ? 'justify-around' : 'justify-between')}>
+            {visibleTabs.map(({ id, label, icon: Icon }) => {
               const active = tab === id
               const isMatch = id === 'match'
               return (
