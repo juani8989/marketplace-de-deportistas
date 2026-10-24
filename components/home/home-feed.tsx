@@ -5,21 +5,38 @@ import { useNav } from '@/components/app/nav'
 import { CompanerosFeed } from '@/components/home/companeros-feed'
 import { EmpresasFeed } from '@/components/home/empresas-feed'
 import { EventosFeed } from '@/components/home/eventos-feed'
+import { EventAthletesFeed } from '@/components/event/event-athletes-feed'
+import { EventBrandsFeed } from '@/components/event/event-brands-feed'
 import { cn } from '@/lib/utils'
 
-type Segment = 'companeros' | 'empresas' | 'eventos'
+type Segment = 'companeros' | 'empresas' | 'eventos' | 'deportistas' | 'marcas'
 
-const labels: Record<Segment, string> = { companeros: 'Compañeros', empresas: 'Empresas', eventos: 'Eventos' }
+const labels: Record<Segment, string> = {
+  companeros: 'Compañeros',
+  empresas: 'Empresas',
+  eventos: 'Eventos',
+  deportistas: 'Deportistas',
+  marcas: 'Marcas',
+}
 const activeColor: Record<Segment, string> = {
   companeros: 'bg-olympic-blue text-olympic-white',
   empresas: 'bg-olympic-yellow text-olympic-black',
   eventos: 'bg-olympic-green text-olympic-white',
+  deportistas: 'bg-olympic-blue text-olympic-white',
+  marcas: 'bg-olympic-yellow text-olympic-black',
+}
+
+function segmentsFor(role: string): Segment[] {
+  if (role === 'deportista') return ['companeros', 'empresas', 'eventos']
+  if (role === 'evento') return ['deportistas', 'marcas']
+  return ['companeros', 'eventos']
 }
 
 export function HomeFeed() {
   const { role } = useNav()
-  const segments: Segment[] = role === 'deportista' ? ['companeros', 'empresas', 'eventos'] : ['companeros', 'eventos']
-  const [segment, setSegment] = useState<Segment>('companeros')
+  const segments = segmentsFor(role)
+  const [segment, setSegment] = useState<Segment>(segments[0])
+  const isEventList = segment === 'deportistas' || segment === 'marcas'
 
   return (
     <div className="relative h-full">
@@ -40,9 +57,15 @@ export function HomeFeed() {
           </button>
         ))}
       </div>
-      <div key={segment} className="h-full snap-y snap-mandatory overflow-y-scroll [scrollbar-width:none]">
-        {segment === 'companeros' ? <CompanerosFeed /> : segment === 'empresas' ? <EmpresasFeed /> : <EventosFeed />}
-      </div>
+      {isEventList ? (
+        <div key={segment} className="h-full overflow-y-auto px-4 pb-28 pt-28 [scrollbar-width:none]">
+          {segment === 'deportistas' ? <EventAthletesFeed /> : <EventBrandsFeed />}
+        </div>
+      ) : (
+        <div key={segment} className="h-full snap-y snap-mandatory overflow-y-scroll [scrollbar-width:none]">
+          {segment === 'companeros' ? <CompanerosFeed /> : segment === 'empresas' ? <EmpresasFeed /> : <EventosFeed />}
+        </div>
+      )}
     </div>
   )
 }
