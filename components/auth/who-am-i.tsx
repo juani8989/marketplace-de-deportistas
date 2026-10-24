@@ -119,7 +119,7 @@ export function WhoAmI({ athletes }: { athletes: FamousAthlete[] }) {
       <OlympicRings className="pointer-events-none absolute left-1/2 top-1/2 w-[min(1100px,140vw)] -translate-x-1/2 -translate-y-1/2 opacity-15" />
       <BrandLine className="relative z-30" />
       <header className="pointer-events-none relative z-20 flex flex-col items-center gap-3 px-6 pt-6 text-center md:absolute md:inset-x-0 md:top-0.5">
-        <BrandLogo className="h-6" />
+        <BrandLogo className="h-11 md:h-14" />
         <div className="flex flex-col items-center gap-1">
           <p className="eyebrow text-xs text-olympic-white/60">El marketplace del deporte</p>
           <h1 className="text-4xl font-semibold leading-tight md:text-5xl">{'¿Quién sos?'}</h1>
