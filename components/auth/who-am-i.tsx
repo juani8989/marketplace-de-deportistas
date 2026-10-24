@@ -6,6 +6,7 @@ import { enterAsGuest, type Role } from '@/lib/auth-store'
 import { brandLogos, eventImages, roleConfig } from '@/lib/roles'
 import type { FamousAthlete } from '@/lib/wikipedia'
 import { AuthPanel } from '@/components/auth/auth-panel'
+import { BrandLogo } from '@/components/brand-logo'
 import { cn } from '@/lib/utils'
 
 function OlympicRings({ className }: { className?: string }) {
@@ -118,7 +119,9 @@ export function WhoAmI({ athletes }: { athletes: FamousAthlete[] }) {
       <OlympicRings className="pointer-events-none absolute left-1/2 top-1/2 w-[min(1100px,140vw)] -translate-x-1/2 -translate-y-1/2 opacity-15" />
 
       <header className="pointer-events-none relative z-20 flex flex-col items-center gap-2 px-6 pt-10 text-center md:absolute md:inset-x-0 md:top-0">
-        <p className="font-display text-sm font-bold uppercase tracking-[0.3em] text-olympic-white/60">Dorsal</p>
+        <p>
+          <BrandLogo className="text-2xl tracking-[0.15em] md:text-3xl" />
+        </p>
         <h1 className="font-display text-6xl font-extrabold uppercase leading-none tracking-tight md:text-8xl">
           {'¿Quién soy?'}
         </h1>

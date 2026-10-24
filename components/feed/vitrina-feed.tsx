@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Lock, Medal, ShieldCheck, TrendingDown, Unlock } from 'lucide-react'
 import { useAppStore } from '@/components/app-store'
+import { useNav } from '@/components/app/nav'
 import { athletes, vitrinaPosts, type VitrinaPost } from '@/lib/data'
 import { ActionRail, AthleteTag, Chip, ProgressBar, Slide } from './slide'
 import { Button } from '@/components/ui/button'
@@ -34,7 +35,9 @@ function Sparkline({ points }: { points: number[] }) {
 }
 
 function VitrinaSlide({ post, index }: { post: VitrinaPost; index: number }) {
-  const { mode, unlockedSecrets, setTab } = useAppStore()
+  const { mode, unlockedSecrets } = useAppStore()
+  const { goTo } = useNav()
+  const setTab = goTo
   const athlete = athletes[post.athleteId]
 
   if (post.type === 'achievement') {

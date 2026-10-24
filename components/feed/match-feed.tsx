@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 function AffinityBib({ value, label = 'afinidad' }: { value: number; label?: string }) {
   return (
     <div className="flex w-24 shrink-0 flex-col items-center rounded-lg border-2 border-accent-foreground/20 bg-accent px-2 py-2 text-accent-foreground shadow-lg">
-      <span className="text-[10px] font-bold uppercase tracking-widest">Dorsal</span>
+      <span className="text-[10px] font-bold uppercase tracking-widest">BoostSport</span>
       <span className="font-display text-4xl font-extrabold leading-none">{value}%</span>
       <span className="text-[10px] font-bold uppercase tracking-wide">{label}</span>
     </div>
