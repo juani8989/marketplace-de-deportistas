@@ -9,6 +9,23 @@ import { AuthPanel } from '@/components/auth/auth-panel'
 import { BrandLine, BrandLogo } from '@/components/brand-logo'
 import { cn } from '@/lib/utils'
 
+function OlympicRings({ className }: { className?: string }) {
+  const rings = [
+    { cx: 60, cy: 60, color: 'var(--color-olympic-blue)' },
+    { cx: 190, cy: 60, color: 'var(--color-olympic-white)' },
+    { cx: 320, cy: 60, color: 'var(--color-olympic-red)' },
+    { cx: 125, cy: 120, color: 'var(--color-olympic-yellow)' },
+    { cx: 255, cy: 120, color: 'var(--color-olympic-green)' },
+  ]
+  return (
+    <svg viewBox="0 0 380 185" aria-hidden className={className}>
+      {rings.map((r) => (
+        <circle key={r.cx} cx={r.cx} cy={r.cy} r={52} fill="none" stroke={r.color} strokeWidth={11} />
+      ))}
+    </svg>
+  )
+}
+
 const reveal =
   'translate-y-6 opacity-0 transition-all duration-500 ease-out md:group-hover:translate-y-0 md:group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100'
 
@@ -62,7 +79,7 @@ function RolePanel({ role, onSelect, children }: { role: Role; onSelect: () => v
       type="button"
       onClick={onSelect}
       className={cn(
-        'group relative flex flex-1 flex-col overflow-hidden border-olympic-white/10 text-left outline-none transition-[flex-grow] duration-500 ease-out md:border-l md:hover:grow-[1.7] md:focus-visible:grow-[1.7] max-md:border-t',
+        'group relative flex flex-1 flex-col overflow-hidden border-olympic-white/25 text-left md:first:border-l-0 outline-none transition-[flex-grow] duration-500 ease-out md:border-l md:hover:grow-[1.7] md:focus-visible:grow-[1.7] max-md:border-t',
       )}
     >
       <span
@@ -99,20 +116,13 @@ export function WhoAmI({ athletes }: { athletes: FamousAthlete[] }) {
 
   return (
     <main className="relative flex min-h-dvh flex-col overflow-hidden bg-olympic-black text-olympic-white">
-      <BrandLine />
-      <header className="relative z-20 flex flex-col items-center gap-6 px-6 pb-4 pt-8 text-center">
-        <BrandLogo />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/brand/explicado-oscuro.svg"
-          alt="Triángulo de BoostSport que conecta atletas, instituciones y sponsors"
-          width={480}
-          height={400}
-          className="h-auto w-full max-w-sm md:max-w-md"
-        />
-        <div className="flex flex-col items-center gap-2">
+      <OlympicRings className="pointer-events-none absolute left-1/2 top-1/2 w-[min(1100px,140vw)] -translate-x-1/2 -translate-y-1/2 opacity-15" />
+      <BrandLine className="relative z-30" />
+      <header className="pointer-events-none relative z-20 flex flex-col items-center gap-3 px-6 pt-6 text-center md:absolute md:inset-x-0 md:top-0.5">
+        <BrandLogo className="h-6" />
+        <div className="flex flex-col items-center gap-1">
           <p className="eyebrow text-xs text-olympic-white/60">El marketplace del deporte</p>
-          <h1 className="text-4xl font-semibold leading-tight md:text-6xl">{'¿Quién sos?'}</h1>
+          <h1 className="text-4xl font-semibold leading-tight md:text-5xl">{'¿Quién sos?'}</h1>
         </div>
       </header>
 
