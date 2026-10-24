@@ -1,0 +1,23 @@
+'use client'
+
+import { createContext, useContext } from 'react'
+import type { Account, Role } from '@/lib/profile-types'
+
+export type MainTab = 'inicio' | 'vitrina' | 'match' | 'mensajes' | 'perfil'
+
+export type Nav = {
+  role: Role | 'invitado'
+  account?: Account
+  goTo: (tab: MainTab) => void
+  openProfile: (key: string) => void
+  openChat: (matchId: number) => void
+  requireAccount: () => boolean
+}
+
+export const NavContext = createContext<Nav | null>(null)
+
+export function useNav() {
+  const nav = useContext(NavContext)
+  if (!nav) throw new Error('useNav must be used inside NavContext')
+  return nav
+}

@@ -12,11 +12,15 @@ export function AthleteProfileForm({
   pending,
   error,
   onSubmit,
+  submitLabel = 'Crear mi perfil',
+  pendingLabel = 'Creando perfil…',
 }: {
   initial: AthleteProfile
   pending: boolean
   error: string | null
   onSubmit: (profile: AthleteProfile) => void
+  submitLabel?: string
+  pendingLabel?: string
 }) {
   const [p, setP] = useState(initial)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -156,7 +160,7 @@ export function AthleteProfileForm({
 
       <FormError message={error} />
       <button type="submit" disabled={pending} className="rounded-full bg-olympic-blue px-5 py-3 font-bold text-olympic-white disabled:opacity-60">
-        {pending ? 'Creando perfil…' : 'Crear mi perfil'}
+        {pending ? pendingLabel : submitLabel}
       </button>
     </form>
   )

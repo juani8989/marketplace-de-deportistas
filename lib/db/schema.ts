@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, jsonb } from 'drizzle-orm/pg-core'
+import { pgTable, text, timestamp, boolean, jsonb, serial, integer, primaryKey, unique } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -56,4 +56,89 @@ export const profiles = pgTable('profiles', {
   data: jsonb('data').notNull(),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+})
+
+export const posts = pgTable('posts', {
+  id: serial('id').primaryKey(),
+  userId: text('userId').notNull(),
+  authorName: text('authorName').notNull(),
+  kind: text('kind').notNull(),
+  body: text('body').notNull(),
+  mediaUrl: text('mediaUrl'),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+})
+
+export const reactions = pgTable(
+  'reactions',
+  {
+    targetId: text('targetId').notNull(),
+    userId: text('userId').notNull(),
+    kind: text('kind').notNull(),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.targetId, t.userId, t.kind] })],
+)
+
+export const comments = pgTable('comments', {
+  id: serial('id').primaryKey(),
+  targetId: text('targetId').notNull(),
+  userId: text('userId').notNull(),
+  authorName: text('authorName').notNull(),
+  body: text('body').notNull(),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+})
+
+export const reports = pgTable(
+  'reports',
+  {
+    targetId: text('targetId').notNull(),
+    userId: text('userId').notNull(),
+    reason: text('reason').notNull(),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.targetId, t.userId] })],
+)
+
+export const follows = pgTable(
+  'follows',
+  {
+    followerId: text('followerId').notNull(),
+    targetId: text('targetId').notNull(),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.followerId, t.targetId] })],
+)
+
+export const swipes = pgTable(
+  'swipes',
+  {
+    userId: text('userId').notNull(),
+    targetId: text('targetId').notNull(),
+    liked: boolean('liked').notNull(),
+    pitch: text('pitch'),
+    challengeId: text('challengeId'),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.targetId] })],
+)
+
+export const matches = pgTable(
+  'matches',
+  {
+    id: serial('id').primaryKey(),
+    athleteKey: text('athleteKey').notNull(),
+    orgKey: text('orgKey').notNull(),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.athleteKey, t.orgKey)],
+)
+
+export const messages = pgTable('messages', {
+  id: serial('id').primaryKey(),
+  matchId: integer('matchId').notNull(),
+  senderKey: text('senderKey').notNull(),
+  kind: text('kind').notNull().default('text'),
+  body: text('body').notNull(),
+  meta: jsonb('meta'),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
 })
