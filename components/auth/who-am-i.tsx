@@ -26,46 +26,48 @@ function OlympicRings({ className }: { className?: string }) {
   )
 }
 
-const panelImages: Record<Role, { src: string; alt: string; position: string }> = {
-  deportista: {
-    src: '/images/real-athlete.jpg',
-    alt: 'Final de judo femenino en los Juegos Olímpicos Río 2016: la ganadora celebra con los brazos en alto',
-    position: 'object-[30%_30%]',
-  },
-  empresa: {
-    src: '/images/real-sponsor.jpg',
-    alt: 'Botines Adidas de Messi exhibidos en una tienda deportiva',
-    position: 'object-center',
-  },
-  evento: {
-    src: '/images/real-event.jpg',
-    alt: 'Estadio Olímpico de Río 2016 con público en las tribunas y atletas en la pista',
-    position: 'object-center',
-  },
+type PanelImage = { src: string; position: string }
+
+const panelImages: Record<Role, PanelImage[]> = {
+  deportista: [
+    { src: '/images/real-athlete.jpg', position: 'object-[30%_30%]' },
+    { src: '/images/real-athlete-2.jpg', position: 'object-[50%_30%]' },
+  ],
+  empresa: [
+    { src: '/images/real-sponsor.jpg', position: 'object-center' },
+    { src: '/images/real-sponsor-2.jpg', position: 'object-center' },
+    { src: '/images/real-sponsor-3.jpg', position: 'object-[50%_40%]' },
+  ],
+  evento: [
+    { src: '/images/real-event.jpg', position: 'object-center' },
+    { src: '/images/real-event-2.jpg', position: 'object-center' },
+    { src: '/images/real-event-3.jpg', position: 'object-center' },
+  ],
 }
 
 const roleOrder: Role[] = ['deportista', 'empresa', 'evento']
 
-function RoleBackdrop({ active }: { active: Role | null }) {
+function RoleBackdrop({ active, photoIndex }: { active: Role | null; photoIndex: Record<Role, number> }) {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-[5]">
-      {roleOrder.map((role) => {
-        const image = panelImages[role]
-        const isActive = active === role
-        return (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={role}
-            src={image.src}
-            alt=""
-            className={cn(
-              'absolute inset-0 size-full object-cover transition-[opacity,transform] duration-700 ease-out',
-              image.position,
-              isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0',
-            )}
-          />
-        )
-      })}
+      {roleOrder.flatMap((role) =>
+        panelImages[role].map((image, i) => {
+          const isActive = active === role && photoIndex[role] % panelImages[role].length === i
+          return (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={image.src}
+              src={image.src}
+              alt=""
+              className={cn(
+                'absolute inset-0 size-full object-cover transition-[opacity,transform] duration-700 ease-out',
+                image.position,
+                isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0',
+              )}
+            />
+          )
+        }),
+      )}
       <div
         className={cn(
           'absolute inset-0 bg-gradient-to-t from-olympic-black via-olympic-black/50 to-olympic-black/30 transition-opacity duration-700',
@@ -109,11 +111,18 @@ function RolePanel({
 export function WhoAmI(_props: { athletes?: FamousAthlete[] }) {
   const [selected, setSelected] = useState<Role | null>(null)
   const [hovered, setHovered] = useState<Role | null>(null)
+  const [photoIndex, setPhotoIndex] = useState<Record<Role, number>>({ deportista: 0, empresa: 0, evento: 0 })
+
+  const activate = (role: Role) => {
+    if (role === hovered) return
+    setHovered(role)
+    setPhotoIndex((prev) => ({ ...prev, [role]: prev[role] + 1 }))
+  }
 
   return (
     <main className="relative flex min-h-dvh flex-col overflow-hidden bg-olympic-black text-olympic-white">
       <OlympicRings className="pointer-events-none absolute left-1/2 top-[55%] w-[min(1500px,170vw)] -translate-x-1/2 -translate-y-1/2 opacity-45" />
-      <RoleBackdrop active={hovered} />
+      <RoleBackdrop active={hovered} photoIndex={photoIndex} />
       <BrandLine className="relative z-30" />
       <header className="pointer-events-none relative z-20 flex flex-col items-center gap-3 px-6 pt-6 text-center md:absolute md:inset-x-0 md:top-0.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -136,7 +145,7 @@ export function WhoAmI(_props: { athletes?: FamousAthlete[] }) {
             key={role}
             role={role}
             onSelect={() => setSelected(role)}
-            onActivate={() => setHovered(role)}
+            onActivate={() => activate(role)}
           />
         ))}
       </div>
