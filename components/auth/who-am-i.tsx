@@ -28,43 +28,72 @@ function OlympicRings({ className }: { className?: string }) {
 
 const panelImages: Record<Role, { src: string; alt: string; position: string }> = {
   deportista: {
-    src: '/images/hero-athlete.png',
-    alt: 'Judoca argentina celebrando una medalla de oro olímpica',
-    position: 'object-[50%_25%]',
+    src: '/images/real-athlete.jpg',
+    alt: 'Final de judo femenino en los Juegos Olímpicos Río 2016: la ganadora celebra con los brazos en alto',
+    position: 'object-[30%_30%]',
   },
   empresa: {
-    src: '/images/hero-sponsor.png',
-    alt: 'Gimnasio con suplementos y banners de sponsors',
+    src: '/images/real-sponsor.jpg',
+    alt: 'Botines Adidas de Messi exhibidos en una tienda deportiva',
     position: 'object-center',
   },
   evento: {
-    src: '/images/hero-event.png',
-    alt: 'Estadio olímpico lleno de público con atletas en la pista',
+    src: '/images/real-event.jpg',
+    alt: 'Estadio Olímpico de Río 2016 con público en las tribunas y atletas en la pista',
     position: 'object-center',
   },
 }
 
-function RolePanel({ role, onSelect }: { role: Role; onSelect: () => void }) {
+const roleOrder: Role[] = ['deportista', 'empresa', 'evento']
+
+function RoleBackdrop({ active }: { active: Role | null }) {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 z-[5]">
+      {roleOrder.map((role) => {
+        const image = panelImages[role]
+        const isActive = active === role
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={role}
+            src={image.src}
+            alt=""
+            className={cn(
+              'absolute inset-0 size-full object-cover transition-[opacity,transform] duration-700 ease-out',
+              image.position,
+              isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0',
+            )}
+          />
+        )
+      })}
+      <div
+        className={cn(
+          'absolute inset-0 bg-gradient-to-t from-olympic-black via-olympic-black/50 to-olympic-black/30 transition-opacity duration-700',
+          active ? 'opacity-100' : 'opacity-0',
+        )}
+      />
+    </div>
+  )
+}
+
+function RolePanel({
+  role,
+  onSelect,
+  onActivate,
+}: {
+  role: Role
+  onSelect: () => void
+  onActivate: () => void
+}) {
   const config = roleConfig[role]
-  const image = panelImages[role]
   return (
     <button
       type="button"
       onClick={onSelect}
+      onMouseEnter={onActivate}
+      onFocus={onActivate}
       className="group relative flex min-h-48 flex-1 flex-col justify-end overflow-hidden border-olympic-white/25 text-left outline-none transition-[flex-grow] duration-500 ease-out max-md:border-t md:border-l md:first:border-l-0 md:hover:grow-[1.7] md:focus-visible:grow-[1.7]"
     >
-      <img
-        src={image.src}
-        alt={image.alt}
-        className={cn(
-          'absolute inset-0 size-full scale-110 object-cover opacity-0 transition-all duration-700 ease-out md:group-hover:scale-100 md:group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100',
-          image.position,
-        )}
-      />
-      <span
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-olympic-black via-olympic-black/40 to-transparent opacity-0 transition-opacity duration-700 md:group-hover:opacity-100 group-focus-visible:opacity-100"
-      />
       <div className="relative z-10 flex flex-col gap-2 p-5 text-olympic-white md:p-6">
         <span aria-hidden className={cn('h-1.5 w-10 rounded-full transition-all duration-500 md:group-hover:w-16', config.bg)} />
         <span className="font-display text-3xl font-semibold leading-none text-balance md:text-4xl">{config.label}</span>
@@ -79,10 +108,12 @@ function RolePanel({ role, onSelect }: { role: Role; onSelect: () => void }) {
 
 export function WhoAmI(_props: { athletes?: FamousAthlete[] }) {
   const [selected, setSelected] = useState<Role | null>(null)
+  const [hovered, setHovered] = useState<Role | null>(null)
 
   return (
     <main className="relative flex min-h-dvh flex-col overflow-hidden bg-olympic-black text-olympic-white">
       <OlympicRings className="pointer-events-none absolute left-1/2 top-[55%] w-[min(1500px,170vw)] -translate-x-1/2 -translate-y-1/2 opacity-45" />
+      <RoleBackdrop active={hovered} />
       <BrandLine className="relative z-30" />
       <header className="pointer-events-none relative z-20 flex flex-col items-center gap-3 px-6 pt-6 text-center md:absolute md:inset-x-0 md:top-0.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -93,10 +124,21 @@ export function WhoAmI(_props: { athletes?: FamousAthlete[] }) {
         </div>
       </header>
 
-      <div className="relative z-10 flex flex-1 flex-col pt-8 md:flex-row md:pt-0">
-        <RolePanel role="deportista" onSelect={() => setSelected('deportista')} />
-        <RolePanel role="empresa" onSelect={() => setSelected('empresa')} />
-        <RolePanel role="evento" onSelect={() => setSelected('evento')} />
+      <div
+        className="relative z-10 flex flex-1 flex-col pt-8 md:flex-row md:pt-0"
+        onMouseLeave={() => setHovered(null)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget)) setHovered(null)
+        }}
+      >
+        {roleOrder.map((role) => (
+          <RolePanel
+            key={role}
+            role={role}
+            onSelect={() => setSelected(role)}
+            onActivate={() => setHovered(role)}
+          />
+        ))}
       </div>
 
       <footer className="relative z-20 flex flex-wrap items-center justify-center gap-3 border-t border-olympic-white/10 bg-olympic-black/80 px-6 py-4 text-sm backdrop-blur">
